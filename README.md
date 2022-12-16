@@ -104,6 +104,12 @@ npm install --save-dev @electron-forge/publisher-github
 
 - `force.config.ts`
 
+Add this import.
+
+```ts
+import { PublisherGithub } from '@electron-forge/publisher-github';
+```
+
 Add this after `plugins`.
 
 ```ts
@@ -131,10 +137,12 @@ Go to https://github.com/settings/personal-access-tokens/new
 - Description: `A token to publish minimal-image-viewer.`
 - Repository access
   - `Only select repositories`
-  - `susumuota/minimal-image-viewer`
+    - Select repositories
+      - `susumuota/minimal-image-viewer`
 - Permissions
-  - Contents
-    - `Read and write`
+  - Repository permissions
+    - Contents
+      - `Access: Read and write`
 - `Generate token`
 
 Copy the token to `~/.zshrc`.
