@@ -37,6 +37,8 @@ const config: ForgeConfig = {
         name: 'minimal-image-viewer',
         owner: 'susumuota',
       },
+      prerelease: true,
+      draft: true,
     }),
   ],
 };
