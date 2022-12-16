@@ -4,7 +4,7 @@ A minimal image viewer.
 
 ## Initial log
 
-### Create an Electron project with webpack and typescript
+### Create a new Electron project with webpack and typescript
 
 - https://www.electronforge.io/#using-templates
 - https://www.electronforge.io/templates/typescript-+-webpack-template
@@ -91,7 +91,7 @@ git branch -M main
 git push -u origin main
 ```
 
-### Add GitHub publishers
+### Add GitHub publisher
 
 - https://www.electronforge.io/config/publishers/github
 - https://js.electronforge.io/interfaces/_electron_forge_publisher_github.PublisherGitHubConfig.html
@@ -113,9 +113,54 @@ Add this after `plugins`.
         name: 'minimal-image-viewer',
         owner: 'susumuota',
       },
+      prerelease: true,
+      draft: true,
     }),
   ],
 ```
+
+Create a github token.
+
+- https://github.com/settings/personal-access-tokens/new
+- https://docs.github.com/en/rest/overview/permissions-required-for-fine-grained-personal-access-tokens
+- https://docs.github.com/en/rest/releases/releases#create-a-release
+
+Go to https://github.com/settings/personal-access-tokens/new
+
+- Token name: `publish minimal-image-viewer`
+- Description: `A token to publish minimal-image-viewer.`
+- Repository access
+  - `Only select repositories`
+  - `susumuota/minimal-image-viewer`
+- Permissions
+  - Contents
+    - `Read and write`
+- `Generate token`
+
+Copy the token to `~/.zshrc`.
+
+```sh
+export GITHUB_TOKEN="(secret info)"
+```
+
+Reopen terminal or `exec $SHELL`.
+
+Publish.
+
+```sh
+npm run publish
+```
+
+I might take a few minutes.
+
+Go to https://github.com/susumuota/minimal-image-viewer/releases
+
+Click `Assets` and download `minimal-image-viewer-darwin-x64-1.0.0.zip`.
+
+Unzip.
+
+Right click `minimal-image-viewer.app` and `Open`.
+
 
 ## License
 
