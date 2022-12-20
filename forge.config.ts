@@ -16,6 +16,10 @@ const config: ForgeConfig = {
   plugins: [
     new WebpackPlugin({
       mainConfig,
+      // this enables file:/// in development env
+      // added 'file:' to 'img-src'
+      // https://github.com/electron/forge/blob/main/packages/plugin/webpack/src/Config.ts
+      devContentSecurityPolicy: "default-src 'self' 'unsafe-inline' data:; script-src 'self' 'unsafe-eval' 'unsafe-inline' data:; img-src 'self' 'unsafe-inline' data: file:",
       renderer: {
         config: rendererConfig,
         entryPoints: [
