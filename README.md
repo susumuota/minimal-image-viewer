@@ -1,10 +1,44 @@
 # minimal-image-viewer
 
-A minimal image viewer.
+A minimal image viewer Desktop app for macOS / Windows / Linux.
 
-## Initial log
+## Download
 
-### Create a new Electron project with webpack and typescript
+- https://github.com/susumuota/minimal-image-viewer/releases
+
+## Usage
+
+```
+Key bindings (similar as 'less' command)
+
+o, O                                       Open image files or directories.
+q, Q                                       Quit.
+f, j, PageDown, ArrowDown, Space, Enter    Move forward one page.
+b, k, PageUp, ArrowUp                      Move backward one page.
+g, <, Home                                 Go to first page.
+G, >, End                                  Go to last page.
+ArrowRight                                 Increase the number of images per page.
+ArrowLeft                                  Reduce the number of images per page.
+⌘+                                         Zoom in.
+⌘-                                         Zoom out.
+⌘0                                         Actual size.
+F12                                        Open DevTools.
+```
+
+## Source code
+
+- https://github.com/susumuota/minimal-image-viewer
+
+## TODO
+
+- [ ] Windows binary
+- [ ] Linux binary
+
+## For developers
+
+Here's a initial log to create a Electron app with Webpack, TypeScript, React and GitHub.
+
+### Create a new Electron project with Webpack and Typescript
 
 - https://www.electronforge.io/#using-templates
 - https://www.electronforge.io/templates/typescript-+-webpack-template
@@ -31,11 +65,24 @@ npm install --save-dev @types/react @types/react-dom
 
 - `tsconfig.json`
 
-Add this to the "compilerOptions" section.
+`tsconfig.json` looks a bit old so renew `tsconfig.json`.
+
+```sh
+mv tsconfig.json tsconfig.json.bak
+npx tsc --init  # tsconfig.json will be created
+```
+
+Change `target` and `jsx`.
 
 ```json
-    "jsx": "react-jsx"
+    "target": "es2022",
 ```
+
+```json
+    "jsx": "react-jsx",
+```
+
+Also enables all of the `Type Checking` options.
 
 - `src/index.html`
 
@@ -54,8 +101,10 @@ import { createRoot } from 'react-dom/client';
 
 function render() {
   const container = document.getElementById('app');
-  const root = createRoot(container);
-  root.render(<h2>Hello from React!</h2>);
+  if (container) {
+    const root = createRoot(container);
+    root.render(<h2>Hello from React!</h2>);
+  }
 }
 
 render();
@@ -69,7 +118,7 @@ Add this to the end of the existing file.
 import './app';
 ```
 
-Run.
+Test it.
 
 ```sh
 npm run start
@@ -137,12 +186,12 @@ Go to https://github.com/settings/personal-access-tokens/new
 - Description: `A token to publish minimal-image-viewer.`
 - Repository access
   - `Only select repositories`
-    - Select repositories
+    - `Select repositories`
       - `susumuota/minimal-image-viewer`
 - Permissions
-  - Repository permissions
+  - `Repository permissions`
     - Contents
-      - `Access: Read and write`
+      - `Read and write`
 - `Generate token`
 
 Copy the token to `~/.zshrc`.
@@ -159,7 +208,7 @@ Publish.
 npm run publish
 ```
 
-I might take a few minutes.
+It might take a few minutes.
 
 Go to https://github.com/susumuota/minimal-image-viewer/releases
 
