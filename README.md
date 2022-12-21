@@ -2,6 +2,11 @@
 
 A minimal image viewer Desktop app for macOS / Windows / Linux.
 
+- minimal and simple code based on [Electron Forge template](https://www.electronforge.io/templates/typescript-+-webpack-template) (Webpack, TypeScript and React)
+- pager (`less`) like key bindings (e.g. `space` key to move forward one page, `b` key to move backward one page.)
+- pre-loading images to improve performance
+- macOS binary only
+
 ## Download
 
 - https://github.com/susumuota/minimal-image-viewer/releases

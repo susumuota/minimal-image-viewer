@@ -36,7 +36,7 @@ const createWindow = () => {
   ipcMain.handle('glob', (_, pattern) => glob.sync(pattern));
   ipcMain.handle('store-set', (_, key, value) => store.set(key, value));
   ipcMain.handle('store-get', (_, key) => store.get(key));
-  ipcMain.handle('devtools', () => mainWindow.webContents.isDevToolsOpened() ? mainWindow.webContents.closeDevTools() : mainWindow.webContents.openDevTools());
+  ipcMain.handle('devtools', () => mainWindow.webContents.openDevTools());
   ipcMain.handle('quit', () => app.quit());
 
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
