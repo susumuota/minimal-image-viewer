@@ -1,12 +1,12 @@
 import { contextBridge, ipcRenderer } from 'electron';
 
 contextBridge.exposeInMainWorld('api', {
-  dialog: (options: Electron.OpenDialogOptions): Promise<string[] | undefined> => ipcRenderer.invoke('dialog', options),
-  glob: (pattern: string): Promise<string[]> => ipcRenderer.invoke('glob', pattern),
-  storeSet: (key: string, value: unknown): Promise<void> => ipcRenderer.invoke('store-set', key, value),
-  storeGet: (key: string): Promise<unknown> => ipcRenderer.invoke('store-get', key),
-  devtools: (): Promise<void> => ipcRenderer.invoke('devtools'),
-  quit: (): Promise<void> => ipcRenderer.invoke('quit'),
+  dialog: (options: Electron.OpenDialogOptions) => ipcRenderer.invoke('dialog', options),
+  glob: (pattern: string) => ipcRenderer.invoke('glob', pattern),
+  storeSet: (key: string, value: unknown) => ipcRenderer.invoke('store-set', key, value),
+  storeGet: (key: string) => ipcRenderer.invoke('store-get', key),
+  devtools: () => ipcRenderer.invoke('devtools'),
+  quit: () => ipcRenderer.invoke('quit'),
 })
 
 declare global {
