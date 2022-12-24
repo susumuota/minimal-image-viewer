@@ -1,11 +1,11 @@
 # minimal-image-viewer
 
-A minimal image viewer Desktop app for macOS / Windows / Linux.
+A minimal image viewer Desktop app for macOS, Windows and Linux.
 
-- minimal and simple code based on [Electron Forge template](https://www.electronforge.io/templates/typescript-+-webpack-template) (Webpack, TypeScript and React)
-- pager (`less`) like key bindings (e.g. `space` key to move forward one page, `b` key to move backward one page.)
+- minimal and simple code based on [Electron Forge](https://www.electronforge.io/)
+- pager-like key bindings (e.g. `space` key to move forward one page, `b` key to move backward one page)
 - pre-loading images to improve performance
-- macOS binary only
+- macOS, Windows and Linux binaries are available
 
 ## Download
 
@@ -17,6 +17,7 @@ A minimal image viewer Desktop app for macOS / Windows / Linux.
 Key bindings (similar as 'less' command)
 
 o, O                                       Open image files or directories.
+r, R                                       Reload directories.
 q, Q                                       Quit.
 f, j, PageDown, ArrowDown, Space, Enter    Move forward one page.
 b, k, PageUp, ArrowUp                      Move backward one page.
@@ -36,8 +37,9 @@ F12                                        Open DevTools.
 
 ## TODO
 
-- [ ] Windows binary
-- [ ] Linux binary
+- [x] Windows binary
+- [x] Linux binary
+- [ ] show PNG information (tEXt chunk)
 
 ## For developers
 
@@ -223,6 +225,67 @@ Unzip.
 
 Right click `minimal-image-viewer.app` and `Open`.
 
+### Setup GitHub Actions to build binaries for macOS, Windows and Linux
+
+- https://dev.to/erikhofer/build-and-publish-a-multi-platform-electron-app-on-github-3lnd
+
+Create a `build.yaml` to automatically build binaries on push to the main branch and pull requests.
+
+- `.github/workflows/build.yaml`
+
+```yaml
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18.12.1
+    - run: npm ci
+    - run: npm run make
+```
+
+Create a `release.yaml` to automatically build binaries on push tags (e.g. `v1.0.0`).
+
+- `.github/workflows/release.yaml`
+
+```yaml
+name: Release
+
+on:
+  push:
+    tags:
+      - v[0-9]+.[0-9]+.[0-9]+*
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18.12.1
+    - run: npm ci
+    - name: publish
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: npm run publish
+```
 
 ## License
 

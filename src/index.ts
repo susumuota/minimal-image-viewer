@@ -12,8 +12,8 @@ if (require('electron-squirrel-startup')) {
 
 const createWindow = () => {
   const options = {
-    width: 800,
-    height: 600,
+    width: 1280,
+    height: 960,
     webPreferences: {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
       // TODO: this enables file:/// in development env, but don't want to turn webSecurity off
