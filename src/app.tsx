@@ -67,83 +67,81 @@ const globImageFiles = async (paths: string[]) => {
   return [...images, ...globs];
 };
 
+const useStore = <T,>(key: string, initialState: T | (() => T)): [T, React.Dispatch<React.SetStateAction<T>>] => {
+  const [state, setState] = useState(initialState);
+
+  useEffect(() => {
+    (async () => setState((await window.api.getStore(key)) as T))();
+  }, []);
+
+  useEffect(() => {
+    window.api.setStore(key, state);
+  }, [state]);
+
+  return [state, setState];
+};
+
 function App() {
   const [filePaths, setFilePaths] = useState<string[]>([]);
   const [imageFiles, setImageFiles] = useState<string[]>([]);
   const [index, setIndex] = useState(0);
-  const [steps, setSteps] = useState(1);
+  const [steps, setSteps] = useStore('steps', 1);
 
   const open = () => {
     (async () => {
       const paths = await showDialog();
       setFilePaths(paths);
-      const files = await globImageFiles(paths);
-      setImageFiles(files);
+      setImageFiles(await globImageFiles(paths));
       setIndex(0);
     })();
-  };
-
-  const reload = () => {
-    (async () => {
-      const files = await globImageFiles(filePaths);
-      setImageFiles(files);
-    })();
-  };
-
-  const restoreSteps = () => {
-    (async () => setSteps((await window.api.storeGet('steps')) as number))();
-  };
-
-  const handleKeydown = (event: KeyboardEvent) => {
-    const isKey = (keys: string[]) => keys.includes(event.key);
-    if (isKey(['o', 'O'])) {
-      open();
-    } else if (isKey(['r', 'R'])) {
-      reload();
-    } else if (isKey(['q', 'Q'])) {
-      window.api.quit();
-    } else if (isKey(['F12'])) {
-      window.api.devtools();
-    } else if (isKey(['f', 'j', 'PageDown', 'ArrowDown', ' ', 'Enter'])) {
-      setIndex((index) => index + steps < imageFiles.length ? index + steps : index);
-    } else if (isKey(['b', 'k', 'PageUp', 'ArrowUp'])) {
-      setIndex((index) => index - steps > 0 ? index - steps : 0);
-    } else if (isKey(['g', '<', 'Home'])) {
-      setIndex(0);
-    } else if (isKey(['G', '>', 'End'])) {
-      setIndex(imageFiles.length - steps);
-    } else if (isKey(['ArrowRight'])) {
-      setSteps((steps) => steps + 1);
-    } else if (isKey(['ArrowLeft'])) {
-      setSteps((steps) => steps - 1 > 0 ? steps - 1 : 1);
-    }
   };
 
   useEffect(() => {
     open();
-    restoreSteps();
   }, []);
 
   useEffect(() => {
-    window.api.storeSet('steps', steps);
-  }, [steps]);
-
-  useEffect(() => {
+    const handleKeydown = (event: KeyboardEvent) => {
+      const isKey = (keys: string[]) => keys.includes(event.key);
+      if (isKey(['o', 'O'])) {
+        open();
+      } else if (isKey(['r', 'R'])) {
+        (async () => setImageFiles(await globImageFiles(filePaths)))();
+      } else if (isKey(['q', 'Q'])) {
+        window.api.quit();
+      } else if (isKey(['F12'])) {
+        window.api.devtools();
+      } else if (isKey(['f', 'j', 'PageDown', 'ArrowDown', ' ', 'Enter'])) {
+        setIndex((index) => index + steps < imageFiles.length ? index + steps : index);
+      } else if (isKey(['b', 'k', 'PageUp', 'ArrowUp'])) {
+        setIndex((index) => index - steps > 0 ? index - steps : 0);
+      } else if (isKey(['g', '<', 'Home'])) {
+        setIndex(0);
+      } else if (isKey(['G', '>', 'End'])) {
+        setIndex(imageFiles.length - steps);
+      } else if (isKey(['ArrowRight'])) {
+        setSteps((steps) => steps + 1);
+      } else if (isKey(['ArrowLeft'])) {
+        setSteps((steps) => steps - 1 > 0 ? steps - 1 : 1);
+      }
+    };
     window.addEventListener('keydown', handleKeydown);
     return () => window.removeEventListener('keydown', handleKeydown);
-  }, [steps, imageFiles]);
+  }, [filePaths, imageFiles, steps]);
 
-  console.debug('index === ', index, ', steps === ', steps, 'imageFiles.length === ', imageFiles.length);
+  console.debug('index === ', index, ', steps === ', steps, ', imageFiles.length === ', imageFiles.length);
 
-  const prevFiles = imageFiles.slice(index - steps, index); // pre fetch
+  const prevFiles = imageFiles.slice(index - steps, index); // preload
   const currentFiles = imageFiles.slice(index, index + steps);
-  const nextFiles = imageFiles.slice(index + steps, index + steps * 2); // pre fetch
+  const nextFiles = imageFiles.slice(index + steps, index + steps * 2); // preload
+
+  if (!(currentFiles && currentFiles.length > 0 && currentFiles[0])) return USAGE;
 
   return (
     <div>
-      {prevFiles.length > 0 ? prevFiles.map((f) => <img key={f} title={f} alt={f} src={'file://' + f} style={{display: 'none'}} />) : ''}
-      {currentFiles.length > 0 ? currentFiles.map((f) => <img key={f} title={f} alt={f} src={'file://' + f} />) : USAGE}
-      {nextFiles.length > 0 ? nextFiles.map((f) => <img key={f} title={f} alt={f} src={'file://' + f} style={{display: 'none'}} />) : ''}
+      {prevFiles.map((f) => <img key={f} title={f} alt={f} src={'file://' + f} style={{display: 'none'}} />)}
+      {currentFiles.map((f) => <img key={f} title={f} alt={f} src={'file://' + f} />)}
+      {nextFiles.map((f) => <img key={f} title={f} alt={f} src={'file://' + f} style={{display: 'none'}} />)}
     </div>
   );
 }
