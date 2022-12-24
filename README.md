@@ -257,6 +257,14 @@ jobs:
     - run: npm run make
 ```
 
+Test it.
+
+```sh
+git add ...
+git commit ...
+git push origin main
+```
+
 Create a `release.yaml` to automatically build binaries on push tags (e.g. `v1.0.0`).
 
 - `.github/workflows/release.yaml`
@@ -285,6 +293,13 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: npm run publish
+```
+
+Test it.
+
+```sh
+git tag v1.0.0
+git push origin v1.0.0
 ```
 
 ## License
