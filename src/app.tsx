@@ -29,6 +29,7 @@ const USAGE = (
     <br />
     o, O                                       Open image files or directories.<br />
     r, R                                       Reload directories.<br />
+    h, H                                       Toggle this help.<br />
     q, Q                                       Quit.<br />
     f, j, PageDown, ArrowDown, Space, Enter    Move forward one page.<br />
     b, k, PageUp, ArrowUp                      Move backward one page.<br />
@@ -91,6 +92,7 @@ function App() {
   const [imageFiles, setImageFiles] = useState<string[]>([]);
   const [index, setIndex] = useState(0);
   const [steps, setSteps] = useStore('steps', 1);
+  const [isHelp, setIsHelp] = useState(false);
 
   const open = () => {
     (async () => {
@@ -98,6 +100,7 @@ function App() {
       setFilePaths(paths);
       setImageFiles(await globImageFiles(paths));
       setIndex(0);
+      setIsHelp(false);
     })();
   };
 
@@ -112,6 +115,8 @@ function App() {
         open();
       } else if (isKey(['r', 'R'])) {
         (async () => setImageFiles(await globImageFiles(filePaths)))();
+      } else if (isKey(['h', 'H'])) {
+        setIsHelp((isHelp) => !isHelp);
       } else if (isKey(['q', 'Q'])) {
         window.api.quit();
       } else if (isKey(['F12'])) {
@@ -132,9 +137,9 @@ function App() {
     };
     window.addEventListener('keydown', handleKeydown);
     return () => window.removeEventListener('keydown', handleKeydown);
-  }, [filePaths, imageFiles, steps]);
+  }, [filePaths, imageFiles, steps, isHelp]);
 
-  console.debug('index === ', index, ', steps === ', steps, ', imageFiles.length === ', imageFiles.length);
+  if (isHelp) return USAGE;
 
   const prevFiles = imageFiles.slice(index - steps, index); // preload
   const currentFiles = imageFiles.slice(index, index + steps);
