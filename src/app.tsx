@@ -73,11 +73,14 @@ const useStore = <T,>(key: string, initialState: T | (() => T)): [T, React.Dispa
   const [state, setState] = useState(initialState);
 
   useEffect(() => {
-    (async () => setState((await window.api.getStore(key)) as T))();
+    (async () => {
+      const s = await window.api.getStore(key);
+      if (s !== undefined) setState(s as T);
+    })();
   }, []);
 
   useEffect(() => {
-    window.api.setStore(key, state);
+    if (state !== undefined) window.api.setStore(key, state);
   }, [state]);
 
   return [state, setState];
