@@ -25,6 +25,9 @@ g, <, Home                                 Go to first page.
 G, >, End                                  Go to last page.
 ArrowRight                                 Increase the number of images per page.
 ArrowLeft                                  Reduce the number of images per page.
+⌘+, Ctrl and +                             Zoom in.
+⌘-, Ctrl and -                             Zoom out.
+⌘0, Ctrl and 0                             Actual size.
 ⌘+                                         Zoom in.
 ⌘-                                         Zoom out.
 ⌘0                                         Actual size.
