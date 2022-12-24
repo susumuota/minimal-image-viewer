@@ -17,6 +17,8 @@ const IMAGE_TYPES = [
 
 const IMAGE_FILES_REGEXP = new RegExp('^.+.(' + IMAGE_TYPES.join('|') + ')$', 'i');
 const isImageFile = (path: string) => path.match(IMAGE_FILES_REGEXP);
+const IMAGE_FILES_GLOB_PATTERN = '/**/*.@(' + IMAGE_TYPES.join('|') + ')';
+
 
 // TODO: fancy usage
 const USAGE = (
@@ -62,7 +64,7 @@ const globImageFiles = async (paths: string[]) => {
   console.debug('images === ', images, ', dirs === ', dirs);
   if (!(dirs && dirs.length > 0 && dirs[0])) return images;
   // https://github.com/isaacs/node-glob#glob-primer
-  const globs = (await Promise.all(dirs.map((dir) => window.api.glob(dir + '/**/*.@(' + IMAGE_TYPES.join('|') + ')')))).flat();
+  const globs = (await Promise.all(dirs.map((dir) => window.api.glob(dir + IMAGE_FILES_GLOB_PATTERN)))).flat();
   console.debug('globs.length === ', globs.length);
   return [...images, ...globs];
 };
