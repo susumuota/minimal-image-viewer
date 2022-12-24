@@ -34,8 +34,8 @@ const createWindow = () => {
 
   ipcMain.handle('dialog', (_, options) => dialog.showOpenDialogSync(mainWindow, options));
   ipcMain.handle('glob', (_, pattern) => glob.sync(pattern));
-  ipcMain.handle('store-set', (_, key, value) => store.set(key, value));
-  ipcMain.handle('store-get', (_, key) => store.get(key));
+  ipcMain.handle('set-store', (_, key, value) => store.set(key, value));
+  ipcMain.handle('get-store', (_, key) => store.get(key));
   ipcMain.handle('devtools', () => mainWindow.webContents.openDevTools());
   ipcMain.handle('quit', () => app.quit());
 
