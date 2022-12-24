@@ -1,3 +1,4 @@
+import path from 'node:path';
 import { app, BrowserWindow, dialog, ipcMain } from 'electron';
 import { glob } from 'glob';
 import Store from 'electron-store';
@@ -32,7 +33,11 @@ const createWindow = () => {
     store.set('windowBounds', mainWindow.getBounds());
   });
 
-  ipcMain.handle('dialog', (_, options) => dialog.showOpenDialogSync(mainWindow, options));
+  ipcMain.handle('dialog', (_, options) => {
+    const result = dialog.showOpenDialogSync(mainWindow, options);
+    return result && result.length > 0 && process.platform === 'win32' ?
+      result.map((win32path: string) => win32path.split(path.win32.sep).join(path.posix.sep)) : result;
+  });
   ipcMain.handle('glob', (_, pattern) => glob.sync(pattern));
   ipcMain.handle('set-store', (_, key, value) => store.set(key, value));
   ipcMain.handle('get-store', (_, key) => store.get(key));
