@@ -18,6 +18,7 @@ Key bindings (similar as 'less' command)
 
 o, O                                       Open image files or directories.
 r, R                                       Reload directories.
+h, H                                       Toggle this help.
 q, Q                                       Quit.
 f, j, PageDown, ArrowDown, Space, Enter    Move forward one page.
 b, k, PageUp, ArrowUp                      Move backward one page.
