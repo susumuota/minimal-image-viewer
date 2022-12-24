@@ -1,0 +1,23 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - v[0-9]+.[0-9]+.[0-9]+*
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18.12.1
+    - run: npm ci
+    - run: npm run make
