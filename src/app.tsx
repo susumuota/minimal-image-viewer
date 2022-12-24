@@ -36,15 +36,15 @@ const USAGE = (
     G, &gt;, End                                  Go to last page.<br />
     ArrowRight                                 Increase the number of images per page.<br />
     ArrowLeft                                  Reduce the number of images per page.<br />
-    ⌘+                                         Zoom in.<br />
-    ⌘-                                         Zoom out.<br />
-    ⌘0                                         Actual size.<br />
+    ⌘+, Ctrl and +                            Zoom in.<br />
+    ⌘-, Ctrl and -                            Zoom out.<br />
+    ⌘0, Ctrl and 0                            Actual size.<br />
     F12                                        Open DevTools.<br />
   </pre>
 );
 
 const showDialog = async () => {
-  const title = 'Select image files or directories';
+  const title = 'Select image directories';
   const paths = await window.api.dialog({
     title: title,
     message: title, // macOS
