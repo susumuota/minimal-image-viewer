@@ -59,28 +59,34 @@ node -v  # v18.12.1
 npm -v   # 8.19.2
 npm init electron-app@latest minimal-image-viewer -- --template=webpack-typescript
 cd minimal-image-viewer
+```
+
+Test it.
+
+```sh
 npm run start
 npm run make
 open out/minimal-image-viewer-darwin-x64/minimal-image-viewer.app
 ```
 
-### Add React
+OK.
 
-- https://www.electronforge.io/guides/framework-integration/react-with-typescript
-- https://reactjs.org/blog/2022/03/08/react-18-upgrade-guide.html#updates-to-client-rendering-apis
+### Update TypeScript
+
+TypeScript is a bit outdated so renew it.
 
 ```sh
-npm install --save react react-dom
-npm install --save-dev @types/react @types/react-dom
+npm outdated
+npm install --save-dev typescript@latest
 ```
+
+Also, renew `tsconfig.json`.
 
 - `tsconfig.json`
 
-`tsconfig.json` looks a bit old so renew `tsconfig.json`.
-
 ```sh
-mv tsconfig.json tsconfig.json.bak
-npx tsc --init  # tsconfig.json will be created
+mv tsconfig.json tsconfig.json.bak  # or just remove
+npx tsc --init                      # tsconfig.json will be created
 ```
 
 Change `target` and `jsx`.
@@ -93,7 +99,29 @@ Change `target` and `jsx`.
     "jsx": "react-jsx",
 ```
 
-Also enables all of the `Type Checking` options.
+Also, enables all of the `Type Checking` options.
+
+Test it again.
+
+```sh
+npm run start
+```
+
+OK.
+
+### Add React
+
+- https://www.electronforge.io/guides/framework-integration/react-with-typescript
+- https://reactjs.org/blog/2022/03/08/react-18-upgrade-guide.html#updates-to-client-rendering-apis
+
+Install React.
+
+```sh
+npm install --save react react-dom
+npm install --save-dev @types/react @types/react-dom
+```
+
+Add some template files.
 
 - `src/index.html`
 
@@ -135,11 +163,33 @@ Test it.
 npm run start
 ```
 
+OK.
+
+### Choose License and create README.md
+
+- https://choosealicense.com/
+
+```sh
+touch LICENSE     # create a file and copy license text from site. e.g. https://choosealicense.com/licenses/mit/
+touch README.md   # also create a README file
+```
+
+Don't forget to change `license` field on `package.json`.
+
+- `package.json`
+
+```json
+  "license": "MIT",
+```
+
+### Create a GitHub repository
+
 Commit. No need to run `git init`.
 
 ```sh
 git status
-git add [all of the files above]
+git add --all
+git status
 git commit -m "initial commit."
 ```
 
@@ -187,6 +237,8 @@ Add this after `plugins`.
 
 Create a github token.
 
+**You can skip this token generation if you only use GitHub Actions to publish binaries**
+
 - https://github.com/settings/personal-access-tokens/new
 - https://docs.github.com/en/rest/overview/permissions-required-for-fine-grained-personal-access-tokens
 - https://docs.github.com/en/rest/releases/releases#create-a-release
@@ -229,11 +281,13 @@ Unzip.
 
 Right click `minimal-image-viewer.app` and `Open`.
 
+OK.
+
 ### Setup GitHub Actions to build binaries for macOS, Windows and Linux
 
 - https://dev.to/erikhofer/build-and-publish-a-multi-platform-electron-app-on-github-3lnd
 
-Create a `build.yaml` to automatically build binaries on push to the main branch and pull requests.
+Create a `.github/workflows/build.yaml` to automatically build binaries on push to the main branch and pull requests.
 
 - `.github/workflows/build.yaml`
 
@@ -251,7 +305,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+        os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
     - uses: actions/checkout@v3
     - uses: actions/setup-node@v3
@@ -282,21 +336,20 @@ on:
       - v[0-9]+.[0-9]+.[0-9]+*
 
 jobs:
-  build:
+  release:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+        os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
     - uses: actions/checkout@v3
     - uses: actions/setup-node@v3
       with:
         node-version: 18.12.1
     - run: npm ci
-    - name: publish
+    - run: npm run publish
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: npm run publish
 ```
 
 Test it.
