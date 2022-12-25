@@ -1,4 +1,4 @@
-/* https://gist.github.com/msuchodolski/41c9338f3a732379dc570142826ed76e */
+/** https://www.electronjs.org/docs/latest/tutorial/window-customization#set-custom-draggable-region */
 * {
   -webkit-user-select: none;
   user-select: none;
@@ -23,4 +23,30 @@ pre {
   margin: 1rem;
   font-size: 1rem;
   line-height: 1.5rem;
+}
+
+/** https://www.w3schools.com/css/css_tooltip.asp */
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  position: absolute;
+  background-color: black;
+  color: white;
+  text-align: left;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  margin: 1rem;
+  word-break: break-all;
+  bottom: 0;
+  right: 0;
+  z-index: 1;
+  opacity: 0;
+  transition: all 0.5s;
+}
+
+.tooltip:hover .tooltiptext {
+  opacity: 0.5;
 }

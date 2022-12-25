@@ -87,6 +87,15 @@ const useStore = <T,>(key: string, initialState: T | (() => T)): [T, React.Dispa
   return [state, setState];
 };
 
+function Img({src, alt, style}: {src?: string | undefined, alt?: string | undefined, style?: React.CSSProperties | undefined}) {
+  return (
+    <span className="tooltip" style={style}>
+      <img alt={alt} src={src} />
+      <span className="tooltiptext">{alt}</span>
+    </span>
+  );
+}
+
 function App() {
   const [filePaths, setFilePaths] = useState<string[]>([]);
   const [imageFiles, setImageFiles] = useState<string[]>([]);
@@ -149,9 +158,9 @@ function App() {
 
   return (
     <div>
-      {prevFiles.map((f) => <img key={f} title={f} alt={f} src={'file://' + f} style={{display: 'none'}} />)}
-      {currentFiles.map((f) => <img key={f} title={f} alt={f} src={'file://' + f} />)}
-      {nextFiles.map((f) => <img key={f} title={f} alt={f} src={'file://' + f} style={{display: 'none'}} />)}
+      {prevFiles.map((f) => <Img key={f} src={'file://' + f} alt={f} style={{display: 'none'}} />)}
+      {currentFiles.map((f) => <Img key={f} src={'file://' + f} alt={f} />)}
+      {nextFiles.map((f) => <Img key={f} src={'file://' + f} alt={f} style={{display: 'none'}} />)}
     </div>
   );
 }
