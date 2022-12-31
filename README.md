@@ -47,7 +47,7 @@ F12                                        Open DevTools.
 
 ## For developers
 
-Here's a initial log to create a Electron app with Webpack, TypeScript, React and GitHub.
+Here's an initial log to create an Electron app with Webpack, TypeScript, React and GitHub.
 
 ### Create a new Electron project with Webpack and Typescript
 
