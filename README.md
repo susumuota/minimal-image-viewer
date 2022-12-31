@@ -1,5 +1,11 @@
 # minimal-image-viewer
 
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/susumuota/minimal-image-viewer)](https://github.com/susumuota/minimal-image-viewer/releases)
+[![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/susumuota/minimal-image-viewer)](https://github.com/susumuota/minimal-image-viewer)
+[![GitHub](https://img.shields.io/github/license/susumuota/minimal-image-viewer)](https://github.com/susumuota/minimal-image-viewer/blob/main/LICENSE)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/susumuota/minimal-image-viewer/build.yaml)](https://github.com/susumuota/minimal-image-viewer/actions/workflows/build.yaml)
+[![GitHub last commit](https://img.shields.io/github/last-commit/susumuota/minimal-image-viewer)](https://github.com/susumuota/minimal-image-viewer/commits)
+
 A minimal image viewer Desktop app for macOS, Windows and Linux.
 
 - minimal and simple code based on [Electron Forge](https://www.electronforge.io/)
