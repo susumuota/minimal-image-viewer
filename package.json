@@ -13,11 +13,13 @@
   "keywords": [
     "image viewer",
     "image",
-    "viewer"
+    "viewer",
+    "electron"
   ],
   "author": {
     "name": "Susumu OTA",
-    "email": "1632335+susumuota@users.noreply.github.com"
+    "email": "1632335+susumuota@users.noreply.github.com",
+    "url": "https://github.com/susumuota"
   },
   "license": "MIT",
   "devDependencies": {

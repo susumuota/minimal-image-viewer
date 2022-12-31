@@ -34,6 +34,7 @@ const createWindow = () => {
     store.set('windowBounds', mainWindow.getBounds());
   });
 
+  ipcMain.handle('platform', () => process.platform);
   ipcMain.handle('dialog', (_, options) => {
     const result = dialog.showOpenDialogSync(mainWindow, options);
     return result && result.length > 0 && process.platform === 'win32' ?

@@ -21,28 +21,30 @@ const IMAGE_FILES_GLOB_PATTERN = '/**/*.@(' + IMAGE_TYPES.join('|') + ')';
 
 
 // TODO: fancy usage
-const USAGE = (
-  <pre>
-    Minimal Image Viewer<br />
-    <br />
-    Key bindings (similar as 'less' command)<br />
-    <br />
-    o, O                                       Open image files or directories.<br />
-    r, R                                       Reload directories.<br />
-    h, H                                       Toggle this help.<br />
-    q, Q                                       Quit.<br />
-    f, j, PageDown, ArrowDown, Space, Enter    Move forward one page.<br />
-    b, k, PageUp, ArrowUp                      Move backward one page.<br />
-    g, &lt;, Home                                 Go to first page.<br />
-    G, &gt;, End                                  Go to last page.<br />
-    ArrowRight                                 Increase the number of images per page.<br />
-    ArrowLeft                                  Reduce the number of images per page.<br />
-    ⌘+, Ctrl and +                            Zoom in.<br />
-    ⌘-, Ctrl and -                            Zoom out.<br />
-    ⌘0, Ctrl and 0                            Actual size.<br />
-    F12                                        Open DevTools.<br />
-  </pre>
-);
+function Help({platform}: {platform: string}) {
+  return (
+    <pre>
+      Minimal Image Viewer<br />
+      <br />
+      Key bindings (similar as 'less' command)<br />
+      <br />
+      o, O                                       Open image files or directories.<br />
+      r, R                                       Reload directories.<br />
+      h, H                                       Toggle this help.<br />
+      q, Q                                       Quit.<br />
+      f, j, PageDown, ArrowDown, Space, Enter    Move forward one page.<br />
+      b, k, PageUp, ArrowUp                      Move backward one page.<br />
+      g, &lt;, Home                                 Go to first page.<br />
+      G, &gt;, End                                  Go to last page.<br />
+      ArrowRight                                 Increase the number of images per page.<br />
+      ArrowLeft                                  Reduce the number of images per page.<br />
+      {platform === 'darwin' ? '⌘+       ' : 'Ctrl and +'}                                 Zoom in.<br />
+      {platform === 'darwin' ? '⌘-       ' : 'Ctrl and -'}                                 Zoom out.<br />
+      {platform === 'darwin' ? '⌘0       ' : 'Ctrl and 0'}                                 Actual size.<br />
+      F12                                        Open DevTools.<br />
+    </pre>
+  );
+}
 
 const showDialog = async () => {
   const title = 'Select image directories';
@@ -96,7 +98,7 @@ function Img({src, alt, style}: {src?: string | undefined, alt?: string | undefi
   );
 }
 
-function App() {
+function App({platform}: {platform: string}) {
   const [filePaths, setFilePaths] = useState<string[]>([]);
   const [imageFiles, setImageFiles] = useState<string[]>([]);
   const [index, setIndex] = useState(0);
@@ -148,13 +150,13 @@ function App() {
     return () => window.removeEventListener('keydown', handleKeydown);
   }, [filePaths, imageFiles, steps, isHelp]);
 
-  if (isHelp) return USAGE;
+  if (isHelp) return <Help platform={platform} />;
 
   const prevFiles = imageFiles.slice(index - steps, index); // preload
   const currentFiles = imageFiles.slice(index, index + steps);
   const nextFiles = imageFiles.slice(index + steps, index + steps * 2); // preload
 
-  if (!(currentFiles && currentFiles.length > 0 && currentFiles[0])) return USAGE;
+  if (!(currentFiles && currentFiles.length > 0 && currentFiles[0])) return <Help platform={platform} />;
 
   return (
     <div>
@@ -165,10 +167,10 @@ function App() {
   );
 }
 
-window.addEventListener('load', () => {
+window.addEventListener('load', async () => {
   const container = document.getElementById('app');
   if (container) {
     const root = createRoot(container);
-    root.render(<App />);
+    root.render(<App platform={await window.api.platform()} />);
   }
 });
