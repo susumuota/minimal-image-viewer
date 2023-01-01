@@ -86,26 +86,39 @@ npm outdated
 npm install --save-dev typescript@latest
 ```
 
-Also, renew `tsconfig.json`.
+Also, `tsconfig.json` looks a bit old so renew it.
+
+Based on [Node LTS + ESM + Strictest](https://github.com/tsconfig/bases#node-lts--esm--strictest-tsconfigjson) settings,
+
+```sh
+npm install --save-dev @tsconfig/node-lts-strictest-esm
+rm tsconfig.json
+```
+
+Create a new `tsconfig.json` file. Add `dom` (for `window`) and `react-jsx` (for `jsx`).
 
 - `tsconfig.json`
 
-```sh
-mv tsconfig.json tsconfig.json.bak  # or just remove
-npx tsc --init                      # tsconfig.json will be created
-```
-
-Change `target` and `jsx`.
-
 ```json
-    "target": "es2022",
-```
-
-```json
+{
+  // https://github.com/tsconfig/bases/blob/main/bases/node-lts-strictest-esm.combined.json
+  "extends": "@tsconfig/node-lts-strictest-esm/tsconfig.json",
+  "compilerOptions": {
+    "lib": [
+      "es2022",
+      "dom",
+    ],
+    "module": "commonjs",
     "jsx": "react-jsx",
+  },
+}
 ```
 
-Also, enables all of the `Type Checking` options.
+Confirm settings.
+
+```sh
+npx tsc --showConfig
+```
 
 Test it again.
 
