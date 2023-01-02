@@ -1,7 +1,7 @@
 {
   "name": "minimal-image-viewer",
-  "version": "1.2.0",
-  "description": "A minimal image viewer Desktop app for macOS / Windows / Linux.",
+  "version": "1.3.0",
+  "description": "A minimal image viewer Desktop app for macOS, Windows and Linux.",
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",
@@ -50,6 +50,7 @@
   "dependencies": {
     "electron-squirrel-startup": "^1.0.0",
     "electron-store": "^8.1.0",
+    "fast-png-parser": "^0.9.1",
     "glob": "^8.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"

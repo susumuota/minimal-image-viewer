@@ -25,6 +25,7 @@ Key bindings (similar as 'less' command)
 o, O                                       Open image files or directories.
 r, R                                       Reload directories.
 h, H                                       Toggle this help.
+i, I                                       Toggle showing metadata as a tooltip.
 q, Q                                       Quit.
 f, j, PageDown, ArrowDown, Space, Enter    Move forward one page.
 b, k, PageUp, ArrowUp                      Move backward one page.
@@ -49,7 +50,9 @@ F12                                        Open DevTools.
 
 - [x] Windows binary
 - [x] Linux binary
-- [ ] show PNG information (tEXt chunk)
+- [x] show PNG information (tEXt chunk)
+- [ ] improve app startup time (V8 snapshots?)
+- [ ] watch directory change (chokidar?)
 
 ## For developers
 
