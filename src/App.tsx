@@ -41,6 +41,8 @@ function App({platform}: {platform: string}) {
 
   const open = () => {
     (async () => {
+      setIndex(0);
+      setIsHelp(false);
       const paths = await showDialog();
       setFilePaths(paths);
       const files = await globImageFiles(paths);
@@ -48,8 +50,6 @@ function App({platform}: {platform: string}) {
       const metadata = await window.api.getImageMetadata(files);
       console.debug('metadata.length === ', metadata.length);
       setImageMetadata(metadata);
-      setIndex(0);
-      setIsHelp(false);
     })();
   };
 
@@ -64,6 +64,7 @@ function App({platform}: {platform: string}) {
         open();
       } else if (isKey(['r', 'R'])) {
         (async () => {
+          setIsHelp(false);
           const files = await globImageFiles(filePaths);
           setImageFiles(files);
           const metadata = await window.api.getImageMetadata(files);
@@ -104,7 +105,6 @@ function App({platform}: {platform: string}) {
   const metadata = imageMetadata.slice(index, index + steps);
 
   if (!(currentFiles && currentFiles.length > 0 && currentFiles[0])) {
-    setIsHelp(true);
     return <Help platform={platform} />;
   }
 
