@@ -36,9 +36,6 @@ ArrowLeft                                  Reduce the number of images per page.
 ⌘+, Ctrl and +                             Zoom in.
 ⌘-, Ctrl and -                             Zoom out.
 ⌘0, Ctrl and 0                             Actual size.
-⌘+                                         Zoom in.
-⌘-                                         Zoom out.
-⌘0                                         Actual size.
 F12                                        Open DevTools.
 ```
 
@@ -104,7 +101,7 @@ Create a new `tsconfig.json` file. Add `dom` (for `window`) and `react-jsx` (for
 
 ```json
 {
-  // https://github.com/tsconfig/bases/blob/main/bases/node-lts-strictest-esm.combined.json
+  /* https://github.com/tsconfig/bases/blob/main/bases/node-lts-strictest-esm.combined.json */
   "extends": "@tsconfig/node-lts-strictest-esm/tsconfig.json",
   "compilerOptions": {
     "lib": [
@@ -309,7 +306,7 @@ OK.
 
 - https://dev.to/erikhofer/build-and-publish-a-multi-platform-electron-app-on-github-3lnd
 
-Create a `.github/workflows/build.yaml` to automatically build binaries on push to the main branch and pull requests.
+Create a `build.yaml` to automatically build binaries on push to the main branch and pull requests.
 
 - `.github/workflows/build.yaml`
 
@@ -380,6 +377,12 @@ Test it.
 git tag v1.0.0
 git push origin v1.0.0
 ```
+
+Go to https://github.com/susumuota/minimal-image-viewer/releases
+
+Download and test packages.
+
+Done.
 
 ## License
 
