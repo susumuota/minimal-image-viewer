@@ -27,6 +27,8 @@ pre {
 
 /** https://www.w3schools.com/css/css_tooltip.asp */
 .tooltip {
+  font-family: monospace, sans-serif;
+  font-size: 1rem;
   position: relative;
   display: inline-block;
 }
@@ -38,7 +40,9 @@ pre {
   text-align: left;
   font-size: 1rem;
   line-height: 1.5rem;
-  margin: 1rem;
+  margin: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
   word-break: break-all;
   bottom: 0;
   right: 0;
@@ -49,4 +53,30 @@ pre {
 
 .tooltip:hover .tooltiptext {
   opacity: 0.5;
+}
+
+.button {
+  font-family: sans-serif;
+  font-size: 1rem;
+  background-color: black;
+  color: white;
+  border: 1px solid #4CAF50;
+  border-radius: 0.5rem;
+  padding: 0.2rem 1rem 0.2rem 1rem;
+  margin: 0.2rem 0rem 0.2rem 0rem;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #4CAF50;
+  color: white;
+  border: 1px solid #4CAF50;
+}
+
+.button:active {
+  transform: translateY(4px);
 }

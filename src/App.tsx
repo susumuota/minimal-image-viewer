@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react';
 import { IMAGE_TYPES, isImageFile, IMAGE_FILES_GLOB_PATTERN, ImageMetadataType } from './shared';
 import { useStore } from './useStore';
 import { Help } from './Help';
-import { Img } from './Img';
+import { Metadata } from './Metadata';
+import { Tooltip } from './Tooltip';
 
 const showDialog = () => {
   const title = 'Select image directories';
@@ -108,22 +109,18 @@ function App({platform}: {platform: string}) {
     return <Help platform={platform} />;
   }
 
-  // TODO: make a component?
-  const tooltips = metadata.map(m => (
-    <div>
-      <div>width: {m.width}, height: {m.height}</div>
-      <div>{m.keyword}:</div>
-      <div>
-        {m.text.split('\n').map((t, j) => <span key={j}>{t}<br /></span>)}
-      </div>
-    </div>
-  ));
+  const tooltips = currentFiles.map((f, i) => {
+    return !isTooltip || !metadata[i] ? <img key={f} src={'file://' + f} alt={f} /> :
+      <Tooltip key={f} text={ <Metadata metadata={metadata[i]} /> }>
+        <img key={f} src={'file://' + f} alt={f} />
+      </Tooltip>
+  });
 
   return (
     <div>
-      {prevFiles.map((f) => <Img key={f} src={'file://' + f} alt={f} style={{display: 'none'}} />)}
-      {currentFiles.map((f, i) => <Img key={f} src={'file://' + f} alt={f} tooltip={isTooltip ? (tooltips[i] ?? f) : undefined} />)}
-      {nextFiles.map((f) => <Img key={f} src={'file://' + f} alt={f} style={{display: 'none'}} />)}
+      {prevFiles.map((f) => <img key={f} src={'file://' + f} alt={f} style={{display: 'none'}} />)}
+      {tooltips}
+      {nextFiles.map((f) => <img key={f} src={'file://' + f} alt={f} style={{display: 'none'}} />)}
     </div>
   );
 }
