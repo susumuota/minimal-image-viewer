@@ -136,7 +136,7 @@ function App({ platform }: { platform: string }) {
         !isTooltip ? (
           <img key={file} src={'file://' + file} alt={file} />
         ) : (
-          <Tooltip key={file} text={imageMetadata.has(file) ? <Metadata metadata={imageMetadata.get(file)} /> : file}>
+          <Tooltip key={file} text={<Metadata file={file} metadata={imageMetadata.get(file)} />}>
             <img key={file} src={'file://' + file} alt={file} />
           </Tooltip>
         )))}
