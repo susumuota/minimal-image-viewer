@@ -19,10 +19,10 @@ const showDialog = () => {
   });
 };
 
-const globImageFiles = async (paths: string[]) => {
-  if (!(paths && paths.length > 0 && paths[0])) return [];
-  const images = paths.filter(isImageFile);
-  const dirs = paths.filter(path => !images.includes(path));
+const globImageFiles = async (files: string[]) => {
+  if (!(files && files.length > 0 && files[0])) return [];
+  const images = files.filter(isImageFile);
+  const dirs = files.filter(file => !images.includes(file));
   console.debug('images === ', images, ', dirs === ', dirs);
   if (!(dirs && dirs.length > 0 && dirs[0])) return images;
   const globs = (await Promise.all(dirs.map(dir => window.api.glob(dir + IMAGE_FILES_GLOB_PATTERN)))).flat();
@@ -49,7 +49,7 @@ const updateMetadata = async (imageFiles: string[], imageMetadata: Map<string, I
 };
 
 function App({ platform }: { platform: string }) {
-  const [filePaths, setFilePaths] = useState<string[]>([]);
+  const [directories, setDirectories] = useState<string[]>([]);
   const [imageFiles, setImageFiles] = useState<string[]>([]);
   const [imageMetadata, setImageMetadata] = useState<Map<string, ImageMetadataType>>(new Map());
   const [index, setIndex] = useState(0);
@@ -60,15 +60,15 @@ function App({ platform }: { platform: string }) {
   // show dialog just after startup
   useEffect(() => {
     (async () => {
-      const paths = await showDialog();
-      if (paths && paths.length > 0 && paths[0]) setFilePaths(paths);
+      const dirs = await showDialog();
+      if (dirs && dirs.length > 0 && dirs[0]) setDirectories(dirs);
     })();
   }, []);
 
   // glob files after user choose directories
   useEffect(() => {
-    (async () => setImageFiles(await globImageFiles(filePaths)))();
-  }, [filePaths]);
+    (async () => setImageFiles(await globImageFiles(directories)))();
+  }, [directories]);
 
   // get image metadata every time user move the page
   useEffect(() => {
@@ -81,18 +81,18 @@ function App({ platform }: { platform: string }) {
       const isKey = (keys: string[]) => keys.includes(event.key);
       if (isKey(['o', 'O'])) {
         (async () => {
-          const paths = await showDialog();
-          if (paths && paths.length > 0 && paths[0]) {
+          const dirs = await showDialog();
+          if (dirs && dirs.length > 0 && dirs[0]) {
             setIndex(0);
             setIsHelp(false);
             setImageMetadata(new Map());
-            setFilePaths(paths);
+            setDirectories(dirs);
           }
         })();
       } else if (isKey(['r', 'R'])) {
         setIsHelp(false);
         setImageMetadata(new Map());
-        (async () => setImageFiles(await globImageFiles(filePaths)))();
+        (async () => setImageFiles(await globImageFiles(directories)))();
       } else if (isKey(['h', 'H'])) {
         setIsHelp((isHelp) => !isHelp);
       } else if (isKey(['i', 'I'])) {
@@ -117,7 +117,7 @@ function App({ platform }: { platform: string }) {
     };
     window.addEventListener('keydown', handleKeydown);
     return () => window.removeEventListener('keydown', handleKeydown);
-  }, [filePaths, imageFiles, steps]);
+  }, [directories, imageFiles, steps]);
 
   if (isHelp) return <Help platform={platform} />;
 

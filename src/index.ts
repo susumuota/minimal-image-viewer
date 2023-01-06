@@ -17,13 +17,13 @@ if (require('electron-squirrel-startup')) {
 
 // eslint-disable-next-line no-useless-escape
 const PNG_FILE_REGEXP = new RegExp('^.+\.png$', 'i');
-const isPNGFile = (path: string) => path.match(PNG_FILE_REGEXP);
+const isPNGFile = (file: string) => file.match(PNG_FILE_REGEXP);
 
-const getPNGMetadata = async (path: string) => {
+const getPNGMetadata = async (file: string) => {
   let fh: FileHandle | undefined = undefined;
   let chunks: PNGChunkType[] = [];
   try {
-    fh = await open(path, 'r');
+    fh = await open(file, 'r');
     chunks = await extractPNG(fh, { filter: type => ['IHDR', 'tEXt'].includes(type), maxChunks: 2 });
   } finally {
     await fh?.close();
@@ -34,16 +34,16 @@ const getPNGMetadata = async (path: string) => {
   return { width: ihdr.width, height: ihdr.height, keyword: text.keyword, text: text.text } as ImageMetadataType;
 };
 
-const getImageMetadata = async (path: string) => {
+const getImageMetadata = async (file: string) => {
   // TODO: other image types
-  return isPNGFile(path) ? getPNGMetadata(path) : { width: 0, height: 0, keyword: '', text: '' } as ImageMetadataType;
+  return isPNGFile(file) ? getPNGMetadata(file) : { width: 0, height: 0, keyword: '', text: '' } as ImageMetadataType;
 };
 
 const createWindow = () => {
   const options = {
     width: 800,
     height: 800,
-    frame: false,
+    frame: process.platform !== 'darwin',
     webPreferences: {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
       // TODO: this enables file:/// in development env, but don't want to turn webSecurity off
@@ -64,14 +64,14 @@ const createWindow = () => {
 
   ipcMain.handle('platform', () => process.platform);
   ipcMain.handle('dialog', (_, options) => {
-    const result = dialog.showOpenDialogSync(mainWindow, options);
-    if (!(result && result.length > 0)) return result;
-    return process.platform === 'win32' ? result.map((win32path: string) => win32path.split(path.win32.sep).join(path.posix.sep)) : result;
+    const files = dialog.showOpenDialogSync(mainWindow, options);
+    if (!(files && files.length > 0)) return files;
+    return process.platform === 'win32' ? files.map(file => file.replaceAll(path.win32.sep, path.posix.sep)) : files;
   });
   ipcMain.handle('glob', (_, pattern) => glob.sync(pattern));
   ipcMain.handle('set-store', (_, key, value) => store.set(key, value));
   ipcMain.handle('get-store', (_, key) => store.get(key));
-  ipcMain.handle('get-image-metadata', (_, path: string) => getImageMetadata(path));
+  ipcMain.handle('get-image-metadata', (_, file) => getImageMetadata(file));
   ipcMain.handle('devtools', () => mainWindow.webContents.openDevTools());
   ipcMain.handle('quit', () => app.quit());
 

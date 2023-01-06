@@ -7,7 +7,7 @@ contextBridge.exposeInMainWorld('api', {
   glob: (pattern: string) => ipcRenderer.invoke('glob', pattern),
   setStore: (key: string, value: unknown) => ipcRenderer.invoke('set-store', key, value),
   getStore: (key: string) => ipcRenderer.invoke('get-store', key),
-  getImageMetadata: (path: string) => ipcRenderer.invoke('get-image-metadata', path),
+  getImageMetadata: (file: string) => ipcRenderer.invoke('get-image-metadata', file),
   devtools: () => ipcRenderer.invoke('devtools'),
   quit: () => ipcRenderer.invoke('quit'),
 })
@@ -20,7 +20,7 @@ declare global {
       glob: (pattern: string) => Promise<string[]>,
       setStore: (key: string, value: unknown) => Promise<void>,
       getStore: (key: string) => Promise<unknown>,
-      getImageMetadata: (path: string) => Promise<ImageMetadataType>,
+      getImageMetadata: (file: string) => Promise<ImageMetadataType>,
       devtools: () => Promise<void>,
       quit: () => Promise<void>,
     }
