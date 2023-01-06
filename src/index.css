@@ -27,7 +27,7 @@ pre {
 
 /** https://www.w3schools.com/css/css_tooltip.asp */
 .tooltip {
-  font-family: monospace, sans-serif;
+  font-family: sans-serif;
   font-size: 1rem;
   position: relative;
   display: inline-block;
