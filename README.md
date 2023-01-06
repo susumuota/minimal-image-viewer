@@ -101,7 +101,6 @@ Create a new `tsconfig.json` file. Add `dom` (for `window`) and `react-jsx` (for
 
 ```json
 {
-  /* https://github.com/tsconfig/bases/blob/main/bases/node-lts-strictest-esm.combined.json */
   "extends": "@tsconfig/node-lts-strictest-esm/tsconfig.json",
   "compilerOptions": {
     "lib": [
@@ -352,7 +351,7 @@ name: Release
 on:
   push:
     tags:
-      - v[0-9]+.[0-9]+.[0-9]+*
+      - v[0-9]+.[0-9]+.[0-9]+
 
 jobs:
   release:

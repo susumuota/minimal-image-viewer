@@ -6,7 +6,7 @@ function Metadata({ metadata }: { metadata: ImageMetadataType | undefined }) {
   return (
     <div>
       <div>{text.split('\n').map((t, j) => <span key={j}>{t}<br /></span>)}</div>
-      <div className="button" onClick={() => { navigator.clipboard.writeText(text) } }>
+      <div className="button" onClick={() => {navigator.clipboard.writeText(text)}}>
         Copy to Clipboard
       </div>
     </div>

@@ -34,6 +34,11 @@ const getPNGMetadata = async (path: string) => {
   return { width: ihdr.width, height: ihdr.height, keyword: text.keyword, text: text.text } as ImageMetadataType;
 };
 
+const getImageMetadata = async (path: string) => {
+  // TODO: other image types
+  return isPNGFile(path) ? getPNGMetadata(path) : { width: 0, height: 0, keyword: '', text: '' } as ImageMetadataType;
+};
+
 const createWindow = () => {
   const options = {
     width: 800,
@@ -60,15 +65,13 @@ const createWindow = () => {
   ipcMain.handle('platform', () => process.platform);
   ipcMain.handle('dialog', (_, options) => {
     const result = dialog.showOpenDialogSync(mainWindow, options);
-    if (!(result && result.length > 0)) return [];
+    if (!(result && result.length > 0)) return result;
     return process.platform === 'win32' ? result.map((win32path: string) => win32path.split(path.win32.sep).join(path.posix.sep)) : result;
   });
   ipcMain.handle('glob', (_, pattern) => glob.sync(pattern));
   ipcMain.handle('set-store', (_, key, value) => store.set(key, value));
   ipcMain.handle('get-store', (_, key) => store.get(key));
-  ipcMain.handle('get-image-metadata', async (_, paths: string[]) => {
-    return await Promise.all(paths.map(path => isPNGFile(path) ? getPNGMetadata(path) : { width: 0, height: 0, keyword: '', text: '' } as ImageMetadataType));
-  });
+  ipcMain.handle('get-image-metadata', (_, path: string) => getImageMetadata(path));
   ipcMain.handle('devtools', () => mainWindow.webContents.openDevTools());
   ipcMain.handle('quit', () => app.quit());
 
