@@ -15,6 +15,7 @@ const IMAGE_TYPES = [
 // eslint-disable-next-line no-useless-escape
 const IMAGE_FILES_REGEXP = new RegExp('^.+\.(' + IMAGE_TYPES.join('|') + ')$', 'i');
 const isImageFile = (path: string) => path.match(IMAGE_FILES_REGEXP);
+// https://github.com/isaacs/node-glob#glob-primer
 const IMAGE_FILES_GLOB_PATTERN = '/**/*.@(' + IMAGE_TYPES.join('|') + ')';
 
 type ImageMetadataType = {

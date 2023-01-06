@@ -1,5 +1,5 @@
 // TODO: fancy usage
-function Help({platform}: {platform: string}) {
+function Help({ platform }: { platform: string }) {
   return (
     <pre>
       Minimal Image Viewer<br />
