@@ -1,6 +1,6 @@
 {
   "name": "minimal-image-viewer",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "A minimal image viewer Desktop app for macOS, Windows and Linux.",
   "main": ".webpack/main",
   "scripts": {
