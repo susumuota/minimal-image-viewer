@@ -52,7 +52,7 @@ pre {
 }
 
 .tooltip:hover .tooltiptext {
-  opacity: 0.5;
+  opacity: 0.7;
 }
 
 .button {
@@ -60,21 +60,21 @@ pre {
   font-size: 1rem;
   background-color: black;
   color: white;
-  border: 1px solid #4CAF50;
+  border: 1px solid rgb(21, 183, 185);
   border-radius: 0.5rem;
   padding: 0.2rem 1rem 0.2rem 1rem;
   margin: 0.2rem 0rem 0.2rem 0rem;
   text-align: center;
   text-decoration: none;
-  display: inline-flex;
+  display: inline-block;
   transition-duration: 0.4s;
   cursor: pointer;
 }
 
 .button:hover {
-  background-color: #4CAF50;
+  background-color: rgb(21, 183, 185);
   color: white;
-  border: 1px solid #4CAF50;
+  border: 1px solid rgb(21, 183, 185);
 }
 
 .button:active {
