@@ -1,8 +1,9 @@
 import type { ImageMetadataType } from "./shared";
 
 function Metadata({ file, metadata }: { file: string, metadata: ImageMetadataType | undefined }) {
-  const text = metadata === undefined || !metadata.width ? `file: ${file}` :
-    `file: ${file}\nwidth: ${metadata.width}, height: ${metadata.height}\n${metadata.keyword}: ${metadata.text}`;
+  const text = metadata === undefined ? `File: ${file}` :
+    (metadata.text ? metadata.text :
+      `File: ${file}` + (metadata.width ? `\nSize: ${metadata.width}x${metadata.height}` : ''));
   return (
     <div>
       <div>{text.split('\n').map((t, j) => <span key={j}>{t}<br /></span>)}</div>
