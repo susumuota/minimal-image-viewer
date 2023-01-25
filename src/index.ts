@@ -28,8 +28,9 @@ const getPNGMetadata = async (file: string) => {
   } finally {
     await fh?.close();
   }
-  if (!(chunks && chunks.length > 1 && chunks[0] && chunks[1])) return { width: 0, height: 0, keyword: '', text: '' } as ImageMetadataType;
+  if (!(chunks && chunks.length > 0 && chunks[0])) return { width: 0, height: 0, keyword: '', text: '' } as ImageMetadataType;
   const ihdr = parsePNG(chunks[0]) as PNG_IHDR_Type;
+  if (!(chunks.length > 1 && chunks[1])) return { width: ihdr.width, height: ihdr.height, keyword: '', text: '' } as ImageMetadataType;
   const text = parsePNG(chunks[1]) as PNG_tEXt_Type;
   return { width: ihdr.width, height: ihdr.height, keyword: text.keyword, text: text.text } as ImageMetadataType;
 };
